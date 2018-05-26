@@ -80,22 +80,16 @@ infracoes_2016 = pandas.read_csv("data/infracoes/relatorio-de-multas-implantadas
 infracoes_2014.columns
 
 
-# In[10]:
+# In[91]:
 
 
 infracoes_2015.columns
 
 
-# In[11]:
+# In[92]:
 
 
 infracoes_2016.columns
-
-
-# In[12]:
-
-
-infracoes_2014.head(10)
 
 
 # # Exploração - fiscalização
@@ -187,36 +181,12 @@ infracoes_2014_2016 = pandas.concat(infracoes)
 infracoes_2014_2016.head(10)
 
 
-# In[17]:
-
-
-infracoes_2014_2016.dtypes
-
-
 # In[18]:
 
 
 date_columns = ["datainfracao", "horainfracao", "dataimplantacao"]
 for column in date_columns:
     infracoes_2014_2016[column] = pandas.to_datetime(infracoes_2014_2016[column])
-
-
-# In[19]:
-
-
-infracoes_2014_2016.dtypes
-
-
-# In[20]:
-
-
-infracoes_2014_2016.describe()
-
-
-# In[21]:
-
-
-infracoes_2014_2016.dataimplantacao.describe()
 
 
 # ## Monitoramento
@@ -232,12 +202,6 @@ monitoramento['geometry'] = monitoramento.apply(lambda example: Point(example.lo
 
 monitoramento = geopandas.GeoDataFrame(monitoramento)
 monitoramento.head(5)
-
-
-# In[24]:
-
-
-monitoramento.plot()
 
 
 # Não achei necessário a transformação de nenhum tipo do dataset de monitoramento, apenas a transformação
@@ -257,25 +221,7 @@ fiscalizacao["geometry"] = fiscalizacao.apply(lambda example: Point(example.LONG
 fiscalizacao = geopandas.GeoDataFrame(fiscalizacao)
 
 
-# In[27]:
-
-
-fiscalizacao.plot()
-
-
-# In[28]:
-
-
-fiscalizacao.dtypes
-
-
 # ## Semáforos
-
-# In[29]:
-
-
-semaforos.head(5)
-
 
 # In[30]:
 
@@ -289,36 +235,6 @@ semaforos["geometry"] = semaforos.apply(lambda example: Point(example.Longitude,
 semaforos = geopandas.GeoDataFrame(semaforos)
 
 
-# In[32]:
-
-
-semaforos.plot()
-
-
-# In[33]:
-
-
-semaforos.isnull().sum()
-
-
-# In[34]:
-
-
-semaforos["Latitude"]
-
-
-# In[35]:
-
-
-type(semaforos)
-
-
-# In[36]:
-
-
-semaforos.dtypes
-
-
 # In[37]:
 
 
@@ -327,52 +243,10 @@ for column in categorical_columns:
     semaforos[column] = semaforos[column].astype('category')
 
 
-# In[38]:
-
-
-semaforos.dtypes
-
-
-# In[39]:
-
-
-semaforos.head(5)
-
-
-# In[40]:
-
-
-semaforos["funcionamento"].value_counts()
-
-
 # In[41]:
 
 
 semaforos["funcionamento"] = semaforos["funcionamento"].replace({'E/GIt': "E/Git", "E/GIT": "E/Git"})
-
-
-# In[42]:
-
-
-semaforos["funcionamento"].value_counts()
-
-
-# In[43]:
-
-
-semaforos["sinalsonoro"].value_counts()
-
-
-# In[44]:
-
-
-semaforos["Latitude"].isnull().sum()
-
-
-# In[45]:
-
-
-semaforos["Longitude"].isnull().sum()
 
 
 # In[46]:
@@ -381,43 +255,13 @@ semaforos["Longitude"].isnull().sum()
 semaforos.dropna(subset=["Longitude"], inplace=True)
 
 
-# In[47]:
-
-
-semaforos["Longitude"].isnull().sum()
-
-
-# In[48]:
-
-
-semaforos["sinalizadorciclista"].value_counts()
-
-
-# In[49]:
-
-
-semaforos["localizacao2"].value_counts()
-
-
 # Mesmo que os valores Veicular e Pedestre não estejam presentes no dicionário de dados, não 
 # há indicação para o descarte, então irei mantê-los
-
-# In[50]:
-
-
-semaforos["utilizacao"].value_counts()
-
 
 # ## Acidentes
 
 # Todos os dados que não são números considerei como "0", dado que não há informação na internet ou no 
 # dicionário de dados acerca dos seus significados.
-
-# In[51]:
-
-
-acidentes_2014["data"].head(10)
-
 
 # In[52]:
 
@@ -462,20 +306,8 @@ match_lambda = lambda match: transformDate(match.group(1),
 acidentes_2014["data"] = acidentes_2014["data"].apply(lambda data: match_lambda(regex.search(data)))
 
 
-# In[56]:
-
-
-acidentes_2016["data de abertura"].head(10)
-
-
 # Como é possível perceber, as datas de 2015 e 2016 são do tipo %d/%m/%y contudo as de 2014 são %m/%d/%y
 # e o mês e dia não possuem o zero na frente, vou ter de modificar a ordem e esta falta de 0.
-
-# In[57]:
-
-
-acidentes_2014.columns
-
 
 # Percebi que a coluna tipo do dataset de 2014 é o mesmo tipo_de_ocorrencia de 2015 e 2016, então  a 
 # renomiei para "tipo de ocorrencia"
