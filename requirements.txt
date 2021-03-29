@@ -84,7 +84,7 @@ psycopg2==2.7.4
 ptyprocess==0.5.2
 pycparser==2.18
 pyepsg==0.3.2
-Pygments==2.2.0
+Pygments==2.7.4
 pyOpenSSL==18.0.0
 pyparsing==2.2.0
 pyproj==1.9.5.1
